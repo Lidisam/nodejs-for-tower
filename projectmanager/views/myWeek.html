@@ -1,0 +1,127 @@
+﻿<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>我的周报</title>
+    <!--TODO:通用资源文件-->
+    <% include _partials/resources.html %>
+    <!--首页样式css文件-->
+    <link rel="stylesheet" href="assets/css/common.css">
+    <link rel="stylesheet" href="assets/css/index.css">
+    <link rel="stylesheet" href="assets/css/myWeek.css">
+    <link rel="stylesheet" href="assets/css/weekly.css">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="col-md-1 text-center"></div>
+    <div class="col-md-10 text-center" style="margin-bottom: 20px">
+        <!--TODO: 项目公用header-->
+        <% include _partials/header.html %>
+        <div class="col-md-12 main row animated fadeInDown">
+            <div class="col-md-12" style="margin-top: 25px">
+                <div class="col-md-1">
+                    <img src="assets/img/xiongda.jpg" class="mytask-avator" alt="雄总">
+                </div>
+                <div class="col-md-11">
+                    <div class="col-md-12 text-left mytask-name"><%=userName%></div>
+                    <div class="col-md-12 text-left mytask-group">搞事组</div>
+                </div>
+            </div>
+            <div class="col-md-12" style="margin-top: 15px">
+                <hr/>
+            </div>
+            <h1 class="text-left weekly-title">上周周报</h1>
+            <div class="col-md-12 text-left" style="margin-left: 20px">
+                <% if(weekDatas.length > 0) { %>
+                    <div class="week-title1">本周学习情况如何？</div>
+                    <div class="week-content">
+                        <%=weekDatas[0].lastweek%>
+                    </div>
+                    <div class="week-title1">下周目标是什么？</div>
+                    <div class="week-content">
+                        <%=weekDatas[0].nextweek%>
+                    </div>
+                <% }else{ %>
+                    <div class="text-center" style="color: #bbb">上周无周报</div>
+                <% } %>
+            </div>
+            <div class="col-md-12" style="margin-top: 15px">
+                <hr/>
+            </div>
+            <h1 class="text-left weekly-title">本周周报</h1>
+            <div class="col-md-12 text-left" style="margin-left: 20px;margin-bottom: 50px" id="showCurrentWeek">
+                <% if(weekDatas2.length > 0) { %>
+                    <div class="week-title1">本周学习情况如何？</div>
+                    <div class="week-content">
+                        <%=weekDatas2[0].lastweek%>
+                    </div>
+                    <div class="week-title1">下周目标是什么？</div>
+                    <div class="week-content">
+                        <%=weekDatas2[0].nextweek%>
+                    </div>
+                <% }else{ %>
+                    <form action="" id="writeWeek">
+                        <div class="col-md-12" style="margin-left: 10px">
+                            <div class="text-left">本周学习情况如何？</div>
+                            <input type="text" name="lastWeek" class="form-control">
+                        </div>
+                        <div class="col-md-12" style="margin-left: 10px;margin-top: 25px;">
+                            <div class="text-left">下周目标是什么？</div>
+                            <input type="text" name="nextWeek" class="form-control">
+                        </div>
+                        <div class="col-md-12" style="margin-left: 10px;margin-top: 25px;">
+                            <div class="text-left">所在项目组名称以及个人进度（没参与项目可不填写）</div>
+                            <input type="text" class="form-control">
+                        </div>
+                        <div class="col-md-12 text-left" style="margin: 25px 0 20px 10px">
+                            <input type="button" name="addInfor" class="btn btn-primary" value="发布周报">
+                        </div>
+                    </form>
+                <% } %>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1 text-center"></div>
+</div>
+</body>
+<script>
+    $("[name=addInfor]").click(function () {
+        var lastweek = $("[name=lastWeek]").val();
+        var nextweek = $("[name=nextWeek]").val();
+        if (lastweek == '') {
+            layer.msg('这周情况如何啊？', { icon: 2 });
+            $("[name=lastweek]").focus();
+            return;
+        } else if (nextweek == '') {
+            layer.msg('下周有什么计划啊？说来听听嘛', { icon: 2 });
+            $("[name=nextweek]").focus();
+            return;
+        }
+        $.ajax({
+            type: "POST", 
+            url: "myWeek",
+            data: {
+                "lastweek": lastweek,           
+                "nextweek": nextweek
+            },
+            success: function (result) {
+                if (result != "err") {  
+                    layer.msg('你写完周报了', { icon: 1 });
+                    $("#writeWeek").hide();
+                    $("#showCurrentWeek").append('<div class="week-title1">本周学习情况如何？</div> ' +
+                            '<div class="week-content">'+lastweek+'</div><div class="week-title1">下周目标是什么？</div>'
+                            + nextweek + '</div>');
+                } else {
+                    layer.msg('周报保存失败', { icon: 2 });
+                }
+            },
+            error: function (err) {
+                layer.msg('周报写失败了', { icon: 2 });
+            }
+        });
+    });
+</script>
+
+</html>

@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>彬总牛逼</title>
+    <!--TODO:通用资源文件-->
+    <% include _partials/resources.html %>
+    <script src="/assets/js/init/myProject.js"></script>
+    <script src="/assets/js/helper.js"></script>
+    <!--首页样式css文件-->
+    <link rel="stylesheet" href="/assets/css/common.css">
+    <link rel="stylesheet" href="/assets/css/myProject.css">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="col-md-1 text-center"></div>
+    <div class="col-md-10 text-center">
+        <!--TODO: 项目公用header-->
+        <% include _partials/header.html %>
+        <div class="col-md-12 main row animated fadeInDown" style="margin-bottom: 20px">
+            <div class="col-md-12" style="margin-top: 25px">
+                <div class="col-md-4 text-left">
+                    <div class="project-name"><%=projectname%></div>
+                    <div class="project-desc"><%=projectdesc%></div>
+                </div>
+                <div class="col-md-8 text-right project-selection">
+                    <a href="/waitDealTask">待处理任务</a>  <!--(1)-->
+                    <a href="/projectMembers">成员</a>   <!--(3)-->
+                    <a href="/projectSetting">设置</a>
+                </div>
+                <div class="col-md-12 project-line1"></div>
+                <div class="col-md-12 project-line2"></div>
+            </div>
+            <div class="col-md-12" style="margin-top: 20px">
+                <div class="col-md-12 text-left project-isntalling">
+                    <div class="col-md-6">
+                        <div class="col-md-4 text-left"><a href="">任务</a></div>
+                        <div class="col-md-8 project-text-tip">&nbsp;</div>
+                    </div>
+                    <div class="col-md-4">&nbsp;</div>
+                    <div class="col-md-2 text-right">
+                        <button class="btn btn-primary form-control project-install-btn">添加任务</button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12  project-lists" style="margin-top: 30px;margin-left: 10px">
+                <span style="color: #ccc;">准备添加任务-->点击添加任务按钮</span>
+            </div>
+            <div class="col-md-12" style="margin-top: 35px">
+                <div class="col-md-12 text-left project-isntalling" style="margin-left: 20px;">
+                    <a href="#">未分配任务</a>
+                </div>
+                <div class="col-md-12" style="margin-top: 20px">
+                    <div class="col-md-12 assign-still">
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12" style="margin-top: 35px">
+                <div class="col-md-12 text-left project-isntalling" style="margin-left: 27px;">
+                    <a href="#">已完成任务</a>
+                </div>
+                <div class="col-md-12 project-tasks" style="margin-top: 20px">
+                    <!--TODO:  显示加载已完成页面-->
+                </div>
+                <div class="col-md-12" style="margin-bottom: 20px">
+                    <input type="button" name="getMoreTasks" class="form-control btn btn-success" value="点击加载更多">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1 text-center"></div>
+</div>
+</body>
+<script>
+    var counter = 0;  //统计当前页面共多少个
+    var task_num = 0;  //统计当前页面共多少个
+    var page_num = 1;   //默认已加载了第一页，后面的都是第二页数据开始所以初始值为1
+    $(function () {
+        /**
+         * 任务添加按钮显示
+         */
+        $(".project-install-btn").click(function () {
+            if (counter < 5) {
+                $(".project-lists").append('<div class="col-md-10 project-main-content_' + task_num + '" style="margin-top: 10px">' +
+                        '<div class="col-md-9">' +
+                        '<input type="text" name="project-content_' + task_num + '" class="form-control" style="border: none;' +
+                        'border-bottom: 1px dotted #000;" placeholder="新的任务"></div><div class="col-md-3">' +
+                        '<button class="btn btn-success" onclick="addTask(' + task_num + ')">添加任务</button>' +
+                        '<button class="btn btn-default" onclick="delCreateTask(' + task_num + ')">取消</button></div></div>');
+                counter++;
+                task_num++;
+            } else {
+                $(".project-text-tip").html('<marquee direction="left">有五个了，大熊你还想加啊！！累死人了~~~</marquee>');
+            }
+        });
+    });
+    /**
+     * 小任务添加
+     * @param num
+     */
+    function addTask(num) {
+        var project_content = $("[name=project-content_" + num + "]").val();
+        var project_id = 8;   //这里是彬总自己传过来的值
+        $.ajax({
+            type: "POST",  //提交方式
+            url: "/myProject/add",//添加小任务
+            data: {
+                "project_id": project_id,
+                "project_content": project_content  //项目的小任务内容
+            },//数据，这里使用的是Json格式进行传输
+            success: function (result) {//返回数据根据结果进行相应的处理
+                console.log(result.code);
+                $(".project-main-content_" + num).remove();
+
+                if (result.code) {     //*******注：这里需要自己定义！！！！！
+                    $(".project-text-tip").html('<marquee direction="left">创建成功</marquee>');
+                    $(".assign-still").append('<div class="col-md-12 assign-task_' + result.code + '" style="margin-top: 10px">' +
+                            '<div class="col-md-9">' +
+                            '<textarea type="text" name="" class="form-control project-task-none" style="background-color: #fff"' +
+                            'placeholder="新的任务" readonly>' + project_content + '</textarea></div> ' +
+                            '<div class="col-md-3">' +
+                            '<div class="col-md-6"><a href="/assignTask/' + result.code + '"><button class="btn btn-success">分配任务</button></a></div> ' +
+                            '<div class="col-md-6"><button class="btn btn-danger" ' +
+                            'onclick="delAssignTask(' + result.code + ',' + result.code + ')">删除</button></div></div></div>');
+                } else {
+                    $(".project-text-tip").html('<marquee direction="left">创建失败</marquee>');
+                }
+            },
+            error: function (err) {
+                $(".project-main-content_" + num).remove();
+                $(".project-text-tip").html('<marquee direction="left">创建失败</marquee>');
+            }
+        });
+    }
+    /**
+     * 取消当前创建的任务
+     */
+    function delCreateTask(num) {
+        $(".project-main-content_" + num).remove();
+        counter--;
+    }
+
+    /**
+     * 点击加载更多
+     */
+    $("[name=getMoreTasks]").click(function () {
+        $.ajax({
+            type: "POST",  //提交方式
+            url: "/myProject/moreDoneTasks",//路径
+            data: {
+                "page_num": page_num    //加载数据的页数   由于是第二页，所以默认是1
+            },//数据，这里使用的是Json格式进行传输
+            success: function (result) {//返回数据根据结果进行相应的处理
+                page_num++;
+                console.log(result);
+                var data = result.tasks;
+                if (result.tasks.length > 0) {     //*******注：这里需要自己定义！！！！！
+                    if(result.tasks.length < 5) $("[name=getMoreTasks]").hide();
+                    for (i in data) {
+                        var date = new Date(data[i].deadline);
+                        var month_and_day = date.getMonth()+"/"+date.getDate();
+                        var week = getCurrentWeek(date.getDay());
+                        $(".project-tasks").append('<div class="col-md-12"> ' +
+                                '<div class="col-md-2 text-left">' +
+                                '<span class="project-date">' + month_and_day + '<span class="project-date2">' + week + '</span></span></div> ' +
+                                '<div class="col-md-10"><div class="col-md-10 text-left project-task-name">' +
+                                '' + data[i].taskDesc + '</div>' +
+                                '<div class="col-md-2 project-task-worker">--- ' + data[i].memberName + '</div></div>' +
+                                '<div class="col-md-12"><hr /></div></div>');
+                    }
+                } else {
+                    $("[name=getMoreTasks]").hide();
+                }
+            },
+            error: function (err) {
+                $(".project-text-tip").html('<marquee direction="left">加载失败</marquee>');
+            }
+        });
+    });
+
+    /**
+     * 删除任务
+     */
+    function delAssignTask(task_id, num) {
+        $.ajax({
+            type: "POST",  //提交方式
+            url: "/assignTask/delTask",//路径
+            data: {
+                "task_id": task_id    //加载数据的页数
+            },//数据，这里使用的是Json格式进行传输
+            success: function (result) {//返回数据根据结果进行相应的处理
+                if (result.code) {     //*******注：这里需要自己定义！！！！！
+                    $(".assign-task_" + num).remove();
+                    $(".project-text-tip").html('<marquee direction="left">删除成功</marquee>');
+                } else {
+                    $(".project-text-tip").html('<marquee direction="left">删除失败</marquee>');
+                }
+            },
+            error: function (err) {
+                $(".project-text-tip").html('<marquee direction="left">删除失败</marquee>');
+            }
+        });
+    }
+</script>
+</html>

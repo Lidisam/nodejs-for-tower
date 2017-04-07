@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>新建项目</title>
+    <!--TODO:通用资源文件-->
+    <% include _partials/resources.html %>
+    <!--首页样式css文件-->
+    <link rel="stylesheet" href="assets/css/common.css">
+    <link rel="stylesheet" href="assets/css/installProject.css">
+
+</head>
+<body>
+<div class="container-fluid">
+    <div class="col-md-1 text-center"></div>
+    <div class="col-md-10 text-center" style="margin-bottom: 20px">
+        <!--TODO: 项目公用header-->
+        <% include _partials/header.html %>
+        <div class="col-md-12 main row animated fadeInDown">
+            <div class="text-right" style="margin-top: 8px;">
+                <a href="installProject.html" style="color:#4EA5AD;cursor: hand;">新建项目</a>
+            </div>
+            <div class="col-md-12 text-center main-project" style="margin-top: 50px">
+                <div style="font-size:20px;color: #333;" class="text-left">创建新项目</div>
+                <div class="col-md-10 text-left" style="margin-top: 20px">
+                    <input type="text" name="project_name" class="form-control" placeholder="项目名称"
+                           style="margin-bottom: 8px">
+                    <textarea name="project_desc" id="" cols="10" rows="5" placeholder="简单项目描述，便于其他人理解（选填）"
+                              class="form-control"></textarea>
+                </div>
+            </div>
+            <div class="col-md-12 text-left" style="margin-top: 30px">
+                <div style="font-size:20px;color: #333;" class="text-left">选择项目成员</div>
+                <p style="font-size: 14px;color: #999;margin:3px 0 3px 0;" class="text-left">
+                    管理员可以邀请和移除项目成员，只有被邀请的团队成员才能访问该项目的信息。
+                </p>
+            </div>
+            <div class="text-left col-md-12" style="margin-left: 10px;margin-top: 25px;">
+                <div style="color: #84a099; border-color: #84a099;">团队成员</div>
+                <div class="col-md-1" style="border:1px solid  #84a099;"></div>
+                <div class="col-md-11" style="border:1px solid  #eeeeee;"></div>
+                <div class="col-md-2 text-left" style="margin-top: 10px">
+                    <select name="members" id="members" class="form-control">
+                        <option value="0" data-id="0">点击添加成员</option>
+                        <% members.map(function(member,index){ %>
+                            <% if(userId != member.memberID) { %>
+                            <option value="<%=member.memberID%>" data-id="<%=member.memberID%>">
+                                <%=member.memberName%>
+                            </option>
+                            <% } %>
+                        <% })%>
+                    </select>
+                </div>
+                <div class="col-md-12 text-left" style="margin-top: 20px">
+                    <ul class="checkedMembers"></ul>
+                </div>
+                <div class="col-md-12" style="margin-top: 70px;">
+                    <input type="submit" name="project_install" class="btn btn-primary" value="创建项目">
+                    <a href="index" class="btn btn-default">取消</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1 text-center"></div>
+</div>
+</body>
+<script>
+    var map = [];
+    $(function () {
+        $("#members").change(function () {
+            var user_id = $("#members option:selected").attr("data-id");
+            var user_name = $("#members option:selected").text();
+            console.log(map);
+            if (user_id != '0' && map.indexOf(user_id) < 0) {
+                map.push(user_id);
+                $(".checkedMembers").append('<li class="members_one members_one_' + user_id + ' text-center" title="点击取消" about="1" ' +
+                        'onclick="delMember(' + user_id + ')">' + user_name + '</li>');
+            }
+            var str = '';
+            for (i in map) {
+                if(i == 0) {
+                    str += '('+map[i]+',5)';
+                } else {
+                    str += ',('+map[i]+',5)';
+                }
+            }
+            console.log(str);
+        });
+        $("[name=project_install]").click(function () {
+            var project_name = $("[name=project_name]").val();
+            var project_desc = $("[name=project_desc]").val();
+            /*******ajax请求操作*******/
+            $.ajax({
+                type: "POST",  //提交方式
+                url: "/installProject/add",//路径
+                data: {
+                    "project_name": project_name,  //项目名字
+                    "project_desc": project_desc,   //项目描述
+                    "project_members": map   //项目成员 id数组
+                },//数据，这里使用的是Json格式进行传输
+                success: function (result) {//返回数据根据结果进行相应的处理
+                    if (result) {     //*******注：这里需要自己定义！！！！！
+                        console.log(result);
+                        layer.msg('创建成功', {icon: 1});
+                        window.location.href = "/index";
+                    } else {
+                        console.log(result);
+                        layer.msg('创建失败', {icon: 2});
+                    }
+                },
+                error: function (err) {
+                    layer.msg('创建失败', {icon: 2});
+                }
+            });
+        });
+    });
+    /**
+     * 删除项目成员
+     * @param user_id
+     */
+    function delMember(user_id) {
+        var class_name = "members_one_" + user_id;
+        var index;   //定义索引
+        for (var i = 0; i < map.length; i++) {  //寻找下标
+            if (map[i] == user_id) index = i;
+        }
+        map.splice(index, 1);
+        $("." + class_name).remove();
+    }
+</script>
+<script src="/assets/js/mobileBar.js"></script>
+</html>

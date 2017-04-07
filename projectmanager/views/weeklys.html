@@ -1,0 +1,152 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>周报</title>
+
+    <!--TODO:通用资源文件-->
+    <% include _partials/resources.html %>
+    <!--首页样式css文件-->
+    <link rel="stylesheet" href="assets/css/common.css">
+    <link rel="stylesheet" href="assets/css/index.css">
+    <link rel="stylesheet" href="assets/css/weekly.css">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="col-md-1 text-center"></div>
+    <div class="col-md-10 text-center">
+        <!--TODO: 项目公用header-->
+        <% include _partials/header.html %>
+        <div class="col-md-12 main row animated fadeInDown">
+            <div class="col-md-12 text-center" style="margin-top: 20px">
+                <div class="col-md-4">&nbsp;</div>
+                <div class="col-md-1 text-right">
+                    <div class="week-dir">
+                        <i class="icon-angle-left" style="font-weight:bolder;font-size: 40px"></i>
+                    </div>
+                </div>
+                <div class="col-md-2">
+                    <div class="weekly-page-title" style="text-align: center;color: #000;font-size:
+                26px;font-weight: normal;">
+                        周报总览
+                    </div>
+                    <div class="col-md-12" style="font-size: 10px;">
+                        <%=currentDate.getYear()+1900%>年第<span id="currentWeek"><%=currentWeek%></span>周
+                    </div>
+                    <div class="col-md-12" style="font-size: 5px;color: #ccc;padding: 0">
+                        <!--10月31日 ~ 11月6日-->
+                    </div>
+                </div>
+                <div class="col-md-1">
+                    <div class="week-dir">
+                        <i class="icon-angle-right" style="font-weight:bolder;font-size: 40px"></i>
+                    </div>
+                </div>
+                <div class="col-md-4">&nbsp;</div>
+            </div>
+            <div class="col-md-12">
+                <hr/>
+            </div>
+            <h1 class="text-left weekly-title" style="margin-left: 18px">本周周报</h1>
+            <div class="col-md-12 weeken-content">
+                <% weekDatas.map(function(weekData,index){ %>
+                    <div class="col-md-12 text-left" style="margin-left: 20px">
+                        <div class="week-title1">
+                            <div style="font-size: 20px"><i class="icon-user"></i><%=weekData.memberName%></div>
+                            本周学习情况如何？
+                        </div>
+                        <div class="week-content">
+                            <%=weekData.lastweek%>
+                        </div>
+                        <div class="week-title1">下周目标是什么？</div>
+                        <div class="week-content">
+                            <%=weekData.nextweek%>
+                        </div>
+                    </div>
+                    <div class="col-md-12 text-left" style="margin-left: 20px;color: #aaa;font-size: 12px"><%=weekData.memberName%>，
+                        <%=new Date(weekData.created_at).getMonth()+1%>月<%=new Date(weekData.created_at).getDate()%>日
+                    </div>
+                    <div class="col-md-12">
+                        <hr/>
+                    </div>
+                <% })%>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1 text-center"></div>
+</div>
+</body>
+<script>
+    var num = 0;  //0代表初始状态的当前周
+    /**
+     * 左方向
+     * 获取上周信息
+     */
+    $(".icon-angle-left").click(function () {
+        getWeek(0);
+    });
+    /**
+     * 右方向
+     * 获取上周信息
+     */
+    $(".icon-angle-right").click(function () {
+        getWeek(1);
+    });
+    /**
+     * 获取周报信息
+     * @param current 0代表上一周，1代表下一周
+     */
+    function getWeek(current) {
+        if(current > 0) {
+            num++;
+        }else{
+            num--;
+        }
+        console.log(num);
+        $.ajax({
+            type: "POST",  //提交方式
+            url: "/weeklys/anotherWeeklys",//路径
+            data: {
+                "current": num
+            },//数据，这里使用的是Json格式进行传输
+            success: function (result) {//返回数据根据结果进行相应的处理
+                console.log(result);
+                if (result.length > 0) {     //*******注：这里需要自己定义！！！！！
+                    $(".weeken-content").html("");
+                    if(current > 0) {
+                        $("#currentWeek").text(parseInt($("#currentWeek").text())+1);
+                    }else{
+                        $("#currentWeek").text(parseInt($("#currentWeek").text())-1);
+                    }
+                    for (i in result) {
+                        $(".weeken-content").append('' +
+                                '<div class="col-md-12 text-left" style="margin-left: 20px">' +
+                                    '<div class="week-title1"><div style="font-size: 20px">' +
+                                        '<i class="icon-user"></i> '+ result[i].memberName+'</div>' +
+                                            '本周学习情况如何？' +
+                                        '</div>' +
+                                    '<div class="week-content">'+ result[i].lastweek+'</div>' +
+                                    '<div class="week-title1">' + '下周目标是什么？</div>' +
+                                    '<div class="week-content">'+ result[i].nextweek+'' + '</div>' +
+                                '</div> ' +
+                                '<div class="col-md-12 text-left" style="margin-left: 20px;color: #aaa;font-size: 12px">'
+                                + result[i].memberName + '，'+ (new Date(result[i].created_at).getMonth()+1) +'月'+
+                                (new Date(result[i].created_at).getDate())+ '日' +
+                                '</div>' + '<div class="col-md-12"><hr /></div>');
+                    }
+                } else {
+                    num--;   //将值重置
+                    layer.msg('无更多周报', {icon: 2});
+                }
+            },
+            error: function (err) {
+                layer.msg('获取失败', {icon: 2});
+            }
+        });
+    }
+
+</script>
+<script src="/assets/js/mobileBar.js"></script>
+</html>

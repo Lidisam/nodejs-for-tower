@@ -1,0 +1,164 @@
+body {
+    background-color: #f4f7ed
+}
+
+.main {
+    width: 100%;
+    min-height: 600px;
+    border: 1px solid #dbdfd6;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    background: #fff;
+    opacity: 1;
+    position: relative;
+    transform: none;
+    -webkit-transform: none;
+    transform-origin: 50% 0 0;
+    -webkit-transform-origin: 50% 0 0
+}
+
+.main .main-project .name {
+    display: block;
+    font-size: 17px;
+    color: #333;
+    line-height: 20px;
+    text-align: center;
+    margin: 0 5px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis
+}
+
+.nav ul li {
+    float: left;
+    margin: 0 15px;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    text-decoration: none;
+    cursor: auto
+}
+
+.nav ul li a {
+    float: left;
+    display: block;
+    font-size: 16px;
+    color: rgba(85, 85, 85, 0.5);
+    line-height: 30px
+}
+
+ol, ul {
+    list-style: none none;
+    margin: 0;
+    padding: 0
+}
+
+.nav {
+    float: left;
+    margin: 20px auto;
+    height: 30px
+}
+
+.project-name {
+    display: block;
+    max-width: 620px;
+    color: #555;
+    font-size: 28px;
+    line-height: 1.5;
+    text-align: left;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+}
+
+.project-desc {
+    display: block;
+    width: 620px;
+    font-size: 14px;
+    color: #887;
+    line-height: 1.5;
+    text-align: left;
+    word-wrap: break-word;
+}
+
+.project-selection {
+    color: #84a099;
+}
+
+.project-selection a {
+    margin-right: 10px;
+    color: #84a099;
+}
+
+.project-line1 {
+    padding-bottom: 16px;
+    border-bottom: 4px solid #B8C8CB;
+}
+
+.project-line2 {
+    margin-top: 5px;
+    border: 1px solid #B8C8CB;
+}
+
+.project-isntalling a {
+    color: #000;
+    text-decoration: none;
+    font-size: 24px;
+    padding: 0;
+    vertical-align: baseline;
+    background: transparent;
+    margin-right: 10px;
+    font-weight: bold;
+}
+
+.project-date {
+    font-size: 20px;
+    color: #999;
+}
+
+.project-date2 {
+    font-size: 12px;
+}
+
+.project-task-worker {
+    color: #bbbbbb;
+    height: 50px;
+    line-height: 100px;
+}
+
+.project-task-name {
+    color: #000;
+    font-family: 楷体
+}
+
+.project-task-none {
+    border: none;
+    border-bottom: 1px dotted #000;
+    background-color: #fff;
+    font-family: 楷体;
+}
+
+.wait-deal-name {
+    display: block;
+    margin: 10px 0 0 0;
+    font-size: 20px;
+    color: #887;
+}
+
+.wait-deal-count {
+    display: block;
+    padding: 0 20px;
+    height: 90px;
+    font: normal normal normal 60px/90px 'arial';
+    color: #999;
+}
+
+.wait-deal-fail-count {
+    display: block;
+    padding: 0 20px;
+    height: 90px;
+    font: normal normal normal 60px/90px 'arial';
+    color: #EC9287;
+}
+
+

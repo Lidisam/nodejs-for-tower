@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>我的提示</title>
+    <!--TODO:通用资源文件-->
+    <% include _partials/resources.html %>
+    <!--首页样式css文件-->
+    <link rel="stylesheet" href="assets/css/common.css">
+    <link rel="stylesheet" href="assets/css/myTasks.css">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="col-md-1 text-center"></div>
+    <div class="col-md-10 text-center">
+        <!--TODO: 项目公用header-->
+        <% include _partials/header.html %>
+        <div class="col-md-12 main row animated fadeInDown" style="margin-bottom: 20px">
+            <div class="col-md-12" style="margin-top: 25px">
+                <div class="col-md-1">
+                    <img src="assets/img/xiongda.jpg" class="mytask-avator" alt="雄总">
+                </div>
+                <div class="col-md-11">
+                    <div class="col-md-12 text-left mytask-name">彬总</div>
+                    <div class="col-md-12 text-left mytask-group">web</div>
+                </div>
+            </div>
+            <div class="col-md-12" style="margin-top: 15px">
+                <hr/>
+            </div>
+            <div class="col-md-12" style="margin-top: 10px">
+                <div class="col-md-12 text-left project-isntalling">
+                    <div class="col-md-10">
+                        <div class="col-md-4 text-left"><a href="">待处理任务</a></div>
+                        <div class="col-md-8 project-text-tip">&nbsp;</div>
+                    </div>
+                    <div class="col-md-1">&nbsp;</div>
+                    <div class="col-md-1 text-right">&nbsp;</div>
+                </div>
+            </div>
+            <div class="col-md-12 wait-deal-task_1" style="margin-top: 20px">
+                <div class="col-md-7">
+                    <textarea type="text" class="form-control" readonly style="border: none;
+                    border-bottom: 1px dotted #000;background-color:
+                    #fff;font-family: 楷体;margin-left: 30px;"
+                              name="wait_deal_task">彬总牛逼，靠你了，没错就是你，这个是项目的任务分配内容</textarea>
+                </div>
+                <div class="col-md-5 text-left">
+                    <div class="col-md-12">
+                        <span style="font-family: 楷体">任务来自<i class="icon-hand-right"></i>
+                            <i class="icon-hand-right"></i><a
+                                    href="myProject.html">彬总项目</a>
+                            <div>截止时间:2016-11-01</div>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 wait-deal-task_2" style="margin-top: 20px">
+                <div class="col-md-7">
+                    <textarea type="text" class="form-control" readonly style="border: none;
+                    border-bottom: 1px dotted #000;background-color:
+                    #fff;font-family: 楷体;margin-left: 30px;"
+                              name="wait_deal_task">彬总牛逼哦哦哦，靠你了，没错就是你，这个是项目的任务分配内容</textarea>
+                </div>
+                <div class="col-md-5 text-left">
+                    <div class="col-md-12">
+                        <span style="font-family: 楷体;">任务来自<i class="icon-hand-right"></i>
+                            <i class="icon-hand-right"></i><a
+                                    href="myProject.html">雄大项目</a>
+                            <div>截止时间:2016-11-01</div>
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-1 text-center"></div>
+            <div class="col-md-12">
+                <hr/>
+            </div>
+            <div class="col-md-12" style="margin-top: 10px">
+                <div class="col-md-12 text-left project-isntalling">
+                    <div class="col-md-10">
+                        <div class="col-md-4 text-left"><a href="">周报</a></div>
+                        <div class="col-md-8 project-text-tip">&nbsp;</div>
+                    </div>
+                    <div class="col-md-1">&nbsp;</div>
+                    <div class="col-md-1 text-right">&nbsp;</div>
+                </div>
+            </div>
+            <div class="col-md-12" style="margin-bottom: 20px">
+                <div class="col-md-12 text-left" style="margin-left: 50px;font-family: 楷体;margin-top: 10px">
+                    <div class="col-md-8">彬总发布了新的周报！彬总发布了新的周报！彬总发布了新的周报！彬总发布了新的周报！彬总发布了新的周报！</div>
+                    <div class="col-md-4 text-righte">发布时间:2016-11-01</div>
+                    <div class="col-md-12"><hr /></div>
+                </div>
+                <div class="col-md-12 text-left" style="margin-left: 50px;font-family: 楷体;margin-top: 10px">
+                    <div class="col-md-8">彬总发布了新的周报！</div>
+                    <div class="col-md-4 text-righte">发布时间:2016-11-01</div>
+                    <div class="col-md-12"><hr /></div>
+                </div>
+                <div class="col-md-12 text-left" style="margin-left: 50px;font-family: 楷体;margin-top: 10px">
+                    <div class="col-md-8">彬总发布了新的周报！彬总发布了新的周报！彬总发布了新的周报！彬总发布了新的周报！</div>
+                    <div class="col-md-4 text-righte">发布时间:2016-11-01</div>
+                    <div class="col-md-12"><hr /></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    /***
+     * 处理确认已完成小任务
+     * params judge 判断该操作是确认操作还是删除操作
+     * 1：确认操作；：删除操作
+     * */
+    function dealWaitTask(num, judge) {
+        var task_ids = num;
+        var url = (judge > 0) ? "xxxx确认链接xx" : "xx删除连接xxxx";
+        $.ajax({
+            type: "POST",  //提交方式
+            url: url,//路径
+            data: {
+                "task_id": task_ids  //对应的任务id
+            },//数据，这里使用的是Json格式进行传输
+            success: function (result) {//返回数据根据结果进行相应的处理
+                $(".wait-deal-task_" + num).remove();
+                if (result.success) {     //*******注：这里需要自己定义！！！！！
+                    $(".project-text-tip").html('<marquee direction="left">提交成功</marquee>');
+                } else {
+                    $(".project-text-tip").html('<marquee direction="left">提交失败</marquee>');
+                }
+            },
+            error: function (err) {
+                /*******************************************
+                 * 注：由于没有连上数据库，所以这个作展示，请在你连上后台后将这个区域删掉
+                 */
+                $(".wait-deal-task_" + num).remove();
+                /**
+                 * 注：由于没有连上数据库，所以这个作展示，请在你连上后台后将这个区域删掉
+                 ***************************************************/
+                $(".project-text-tip").html('<marquee direction="left">提交失败</marquee>');
+            }
+        });
+    }
+
+</script>
+<script src="/assets/js/mobileBar.js"></script>
+</html>

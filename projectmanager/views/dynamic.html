@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>项目首页</title>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link href="assets/css/animate.min.css" rel="stylesheet">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="assets/js/jquery-3.1.1.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="assets/js/bootstrap.min.js"></script>
+    <!--[if IE 7]>
+    <link rel="stylesheet" href="assets/css/fontAwesome/css/font-awesome-ie7.min.css"><![endif]-->
+    <link rel="stylesheet" href="assets/css/fontAwesome/css/font-awesome.min.css">
+    <!--首页样式css文件-->
+    <link rel="stylesheet" href="assets/css/common.css">
+    <link rel="stylesheet" href="assets/css/dynamic.css">
+    <link rel="stylesheet" href="assets/css/dynamic02.css">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="col-md-1 text-center"></div>
+    <div class="col-md-10 text-center">
+        <!--TODO: 项目公用header-->
+        <% include _partials/header.html %>
+        <!--筛选动态\所有项目、日历和周报  所有成员-->
+        <div class="col-md-12 main row animated fadeInDown">
+            <div>&nbsp;</div>
+            <div class="dynamic-filters text-left" >
+                <span id="dynamic-filters-title">筛选动态:</span>
+                <span id="dynamic-filters-var">所有项目、日历和周报 所有成员</span>
+            </div>
+            <div class="dynamic-content">
+                <div class="page page-root">
+                    <div class="page-inner" id="page-events" data-page-name="动态">
+                        <div class="team-events">
+                            <div class="events-day">
+                                <h4 class="events-day-title">
+                                    <span class="date">11/26</span>
+                                    <span class="day">周二</span>
+                                </h4>
+                                <div class="events-day-content">
+                                    <div class="events-ancestor">
+                                        <h5 class="events-ancestor-title">
+                                            <a href="#" target="_blank" title="数据库课程设计">数据库课程设计</a>
+                                        </h5>
+                                        <div class="event event-common event-upload-del" data-ancestor-name="数据库课程设计">
+                                            <a href="#" class="from col-md-4 col-xs-12" target="_blank"><img alt="彬总" class="avatar" src="./assets/img/xiongda.jpg"></a>
+                                            <i class="icon-event"></i>
+                                            <div class="event-main col-md-8 col-xs-12">
+                                                <div class="event-head">
+                                                    <a href="#" class="event-created-at">22:28</a>
+                                                    <span class="event-actor">
+                                                        <a href="#" class="link-member" target="_blank">彬总</a>
+                                                    </span>
+                                                    <span class="event-action">
+                                                        删除了文件
+                                                    </span>
+                                                    <span class="event-text">
+                                                        <a href="#" class="emphasize" data-stack="true">数据库课程设计报告 ( 最新版 ).xls</a>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" id="btn-load-more" class="" style="display: block;">加载更多内容</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1 text-center"></div>
+</div>
+</body>
+<script src="/assets/js/mobileBar.js"></script>
+</html>

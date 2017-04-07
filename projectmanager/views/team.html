@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>团队</title>
+
+    <!--TODO:通用资源文件-->
+    <% include _partials/resources.html %>
+    <!--首页样式css文件-->
+    <link rel="stylesheet" href="assets/css/common.css">
+    <link rel="stylesheet" href="assets/css/index.css">
+</head>
+<style>
+    .team a:hover {
+        color: #999;
+        cursor: pointer;
+        text-decoration: none;
+    }
+</style>
+<body>
+<div class="container-fluid">
+    <div class="col-md-1 text-center"></div>
+    <div class="col-md-10 text-center">
+        <!--TODO: 项目公用header-->
+        <% include _partials/header.html %>
+        <div class="col-md-12 main row animated fadeInDown">
+            <!--S=自己到时需要整合或另外搭建到不同的端口-->
+            <div class="col-md-12 text-center" style="margin-top: 50px">
+                <div class="col-md-6 team" style="font-size: 200px;border-right: 1px solid #ccc;">
+                    <a href="http://localhost/meet.html" title="画板室"><i class="icon-pencil"></i></a>
+                </div>
+                <div class="col-md-6 team" style="font-size: 200px">
+                    <a href="http://localhost:1338" title="聊天室"><i class="icon-comments"></i></a>
+                </div>
+            </div>
+            <!--E=自己到时需要整合或另外搭建到不同的端口-->
+        </div>
+    </div>
+    <div class="col-md-1 text-center"></div>
+</div>
+</body>
+<script src="/assets/js/mobileBar.js"></script>
+</html>

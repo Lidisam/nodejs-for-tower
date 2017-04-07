@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>数据库课设</title>
+
+    <link rel="stylesheet" href="/assets/js/fullPage/jquery.fullPage.min.css">
+    <script type="text/javascript" src="/assets/js/jquery-3.1.1.min.js"></script>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="/assets/css/bootstrap.min.css">
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="/assets/js/bootstrap.min.js"></script>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <!-- jquery.easings.min.js 是必须的，用于 easing 参数，也可以使用完整的 jQuery UI 代替 -->
+    <script src="/assets/js/fullPage/jquery.easings.min.js"></script>
+    <!-- 如果 scrollOverflow 设置为 true，则需要引入 jquery.slimscroll.min.js，一般情况下不需要 -->
+    <script src="/assets/js/fullPage/scrolloverflow.min.js"></script>
+    <script src="/assets/js/fullPage/jquery.fullPage.js"></script>
+</head>
+<body>
+<div id="fullpage">
+    <div class="section" style="background-color: #f4f7ed">
+        <div class="container-fluid">
+            <div class="col-md-12 text-center">
+                <span><a href="login" style="font-size: 30px">登录</a></span>/
+                <span><a href="register" style="font-size: 30px">注册</a></span>
+            </div>
+        </div>
+    </div>
+    <div class="section" style="background-color: #f4f7ed">
+        <div class="container-fluid">
+            <div class="col-md-12 text-center">
+                <b style="font-size: 40px;color: #a9a9a9">
+
+                </b>
+                        </div>
+        </div>
+    </div>
+    <div class="section" style="background-color: #f4f7ed">
+        <div class="container-fluid">
+            <div class="col-md-12 text-center">
+                第三屏
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    $("#fullpage").hide();  //先隐藏。。。
+    $(function () {
+        $(function(){
+            $('#fullpage').fullpage({
+                'css3': true,
+                'navigation': true,
+                'navigationPosition': 'right',
+            })
+        })
+        $("#fullpage").show();
+    });
+</script>
+<script src="/assets/js/mobileBar.js"></script>
+</html>

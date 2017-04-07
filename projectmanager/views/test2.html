@@ -1,0 +1,62 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+<meta charset="utf-8">  
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <!-- 可选的Bootstrap主题文件（一般不用引入） -->
+    <link rel="stylesheet" href="assets/css/bootstrap-theme.min.css">
+    <link href="assets/css/animate.min.css" rel="stylesheet">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="assets/js/jquery-3.1.1.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="assets/js/bootstrap.min.js"></script>
+    <!--首页样式css文件-->
+    <link rel="stylesheet" href="assets/css/common.css">
+    <link rel="stylesheet" href="assets/css/index.css">
+    <link rel="stylesheet" href="assets/css/weekly.css">
+<title></title>  
+</head>  
+<body>  
+<form>  
+    <ul>  
+        <li>  
+            <label>姓名：</label>  
+            <input type="text" name="name" id="name" />  
+        </li>  
+        <li>  
+            <label>性别：</label>  
+            <input type="text" name="sex" id="sex" />  
+        </li>  
+        <li>  
+            <label>年龄：</label>  
+            <input type="text" name="age" id="age" />  
+        </li>  
+        <li>  
+            <label>手机：</label>  
+            <input type="text" name="tel" id="tel" />  
+        </li>  
+        <li>  
+            <input type="button" value="提交" id="ok_btn" />  
+        </li>  
+    </ul>  
+</form>  
+<script src="assets/js/jquery-3.1.1.min.js"></script>  
+<script>  
+$('#ok_btn').on('click',function(){  
+    var name = $.trim($('#name').val()),  
+        sex = $.trim($('#sex').val()),  
+        age = $.trim($('#age').val()),  
+        tel = $.trim($('#tel').val()),  
+        data = {name : name,sex : sex,age : age,tel : tel};  
+    $.ajax({  
+        type : 'POST',  
+        url : '/weeklys',  
+        data : data,  
+        success : function(data){  
+            console.log(data);  
+        }  
+    })  
+})  
+</script>  
+</body>  
+</html>  

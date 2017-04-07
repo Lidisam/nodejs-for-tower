@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>待处理任务</title>
+    <!--TODO:通用资源文件-->
+    <% include _partials/resources.html %>
+    <!--首页样式css文件-->
+    <link rel="stylesheet" href="assets/css/common.css">
+    <link rel="stylesheet" href="assets/css/watiDealTask.css">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="col-md-1 text-center"></div>
+    <div class="col-md-10 text-center">
+        <!--TODO: 项目公用header-->
+        <% include _partials/header.html %>
+        <div class="col-md-12 main row animated fadeInDown">
+            <div class="col-md-12" style="margin-top: 25px">
+                <div class="col-md-4 text-left">
+                    <div class="project-name"><%=projectname%></div>
+                    <div class="project-desc"><%=projectdesc%></div>
+                </div>
+                <div class="col-md-8 text-right project-selection">
+                    <a href="/waitDealTask">待处理任务</a>  <!--(1)-->
+                    <a href="/projectMembers">成员</a>   <!--(3)-->
+                    <a href="/projectSetting">设置</a>
+                </div>
+                <div class="col-md-12 project-line1"></div>
+                <div class="col-md-12 project-line2"></div>
+            </div>
+            <div class="col-md-12" style="margin-top: 20px">
+                <div class="col-md-12 text-left project-isntalling">
+                    <div class="col-md-10">
+                        <div class="col-md-4 text-left"><a href="">待处理任务</a></div>
+                        <div class="col-md-8 project-text-tip">&nbsp;</div>
+                    </div>
+                    <div class="col-md-1">&nbsp;</div>
+                    <div class="col-md-1 text-right">&nbsp;</div>
+                </div>
+            </div>
+            <% if(tasks.length > 0) { %>
+                <% tasks.map(function(task,index){ %>
+                    <div class="col-md-12 wait-deal-task_<%=task.taskID%>" style="margin-top: 20px">
+                        <div class="col-md-9">
+                            <textarea type="text" class="form-control" readonly style="border: none;
+                            border-bottom: 1px dotted #000;background-color:
+                            #fff;font-family: 楷体;margin-left: 30px;"
+                                      name="wait_deal_task"><%=task.taskDesc%></textarea>
+                        </div>
+                        <div class="col-md-3 text-left">
+                            <div class="col-md-6">
+                                <button class="btn btn-success" onclick="dealWaitTask(<%=task.taskID%>,1)">确认完成</button>
+                            </div>
+                            <div class="col-md-6">
+                                <button class="btn btn-danger" onclick="delAssignTask(<%=task.taskID%>,0)">删除</button>
+                            </div>
+                        </div>
+                    </div>
+                <% })%>
+            <% }else{ %>
+                <div class="text-center" style="color: #bbb;">暂无待确认任务</div>
+            <% } %>
+            <div class="col-md-12" style="margin-top: 60px">
+                <div class="col-md-12 text-left project-isntalling">
+                    <div class="col-md-6">
+                        <div class="col-md-4 text-left"><a href="">统计</a></div>
+                        <div class="col-md-8">&nbsp;</div>
+                    </div>
+                    <div class="col-md-4">&nbsp;</div>
+                    <div class="col-md-2 text-right">&nbsp;</div>
+                </div>
+            </div>
+            <div class="col-md-12" style="margin-top: 20px; ">
+                <div class="col-md-4" style="border-right: 1px solid #ccc;">
+                    <div class="col-md-12 wait-deal-name">待处理任务</div>
+                    <div class="col-md-12 wait-deal-count wait_deal_count"><%=tasks.length%></div>
+                </div>
+                <div class="col-md-4" style="border-right: 1px solid #ccc;">
+                    <div class="col-md-12 wait-deal-name">延误任务</div>
+                    <div class="col-md-12 wait-deal-fail-count">0</div>
+                </div>
+                <div class="col-md-4">
+                    <div class="col-md-12 wait-deal-name">总任务数</div>
+                    <div class="col-md-12 wait-deal-count"><%=totalProjectNum%></div>
+                </div>
+            </div>
+            <div class="col-md-12" style="margin-top: 60px">
+                <div class="col-md-12 text-left project-isntalling">
+                    <div class="col-md-6">
+                        <div class="col-md-4 text-left"><a href="">贡献</a></div>
+                        <div class="col-md-8">&nbsp;</div>
+                    </div>
+                    <div class="col-md-4">&nbsp;</div>
+                    <div class="col-md-2 text-right">&nbsp;</div>
+                </div>
+            </div>
+            <div class="col-md-12 text-left" style="margin:15px 0 30px 50px">
+                截至目前，共有 2 位成员对项目做出了贡献，上传 0 个文件
+            </div>
+            <!--这里是使用说明请注意！请注意！-->
+            <!--以下是进度条-&#45;&#45;彬总应该width: '+num+'%  这样拼接数据-->
+            <div class="col-md-12" style="padding-left: 30px;margin-bottom: 50px">
+                <div class="col-md-12">
+                    <div class="col-md-1">赖裕雄</div>
+                    <div class="col-md-11" style="background-color: #D3E8DB;height: 20px;width: 70%">7</div>
+                </div>
+                <div class="col-md-12" style="margin-top: 10px;">
+                    <div class="col-md-1">吴彦彬</div>
+                    <div class="col-md-11" style="background-color: #D3E8DB;height: 20px;width: 30%">3</div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-1 text-center"></div>
+    </div>
+</div>
+</body>
+<script>
+    /***
+     * 处理确认已完成小任务
+     * params judge 判断该操作是确认操作还是删除操作
+     * 1：确认操作；：删除操作
+     * */
+    function dealWaitTask(num, judge) {
+        var task_ids = num;
+        var url = (judge > 0) ? "/waitDealTask/confirmTask" : "xx删除连接xxxx";
+        console.log(task_ids);
+        $.ajax({
+            type: "POST",  //提交方式
+            url: url,//路径
+            data: {
+                "task_id": task_ids  //对应的任务id
+            },//数据，这里使用的是Json格式进行传输
+            success: function (result) {//返回数据根据结果进行相应的处理
+                $(".wait-deal-task_" + num).remove();
+                if (result) {     //*******注：这里需要自己定义！！！！！
+                    console.log($(".wait_deal_count").text());
+                    $(".wait_deal_count").text(parseInt($(".wait_deal_count").text())-1);
+                    $(".project-text-tip").html('<marquee direction="left">提交成功</marquee>');
+                } else {
+                    $(".project-text-tip").html('<marquee direction="left">提交失败</marquee>');
+                }
+            },
+            error: function (err) {
+                $(".project-text-tip").html('<marquee direction="left">提交失败</marquee>');
+            }
+        });
+    }
+
+</script>
+<script src="/assets/js/mobileBar.js"></script>
+</html>

@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>聊天室</title>
+	<style>
+		h1 {
+			font-family: Arial, Helvetica, sans-serif;
+			font-weight: bold;
+			font-size: 14pt;
+			color: #006bb5;	
+			background-color: #f0f0f0;
+			-moz-border-radius: 5px;
+			-wekbit-border-radius: 5px;
+			border: 1px solid #f0f0f0;
+			padding: 5px 5px 5px 5px;
+			margin: 0px 0px 18px 0px;
+		}
+		div [id^=divContainer] {
+			border: 0px;
+			margin: 10px 0px 10px 0px;
+			padding: 3px;
+			background-color: #f0f0f0;
+			-moz-border-radius: 5px;
+			-wekbit-border-radius: 5px;
+		}
+		div#divLeft {
+			width: 85%;
+			background-color: #f0f0f0;
+			float: left;
+		}
+		div#divRight {
+			width: 15%;
+			background-color: #f0f0f0;
+			float: right;
+			font-weight: bold;
+			font-size: 12px;
+		}
+		div#divchat {
+			border: 0px;
+			margin: 10px 0px 10px 0px;
+			padding: 3px;
+			background-color: #f0f0f0;
+			-moz-border-radius: 5px;
+			-wekbit-border-radius: 5px;
+			position: relative;
+			height: 300px;
+			overflow: auto;
+			font-size: 12px;
+			border: 1px solid #000;
+		}
+		table#tbDlg {
+			font-family: Arial, Helvetica, sans-serif;
+			font-weight: normal;
+			font-size: 12px;
+			background-color: #f0f0f0;
+			border: 1px solid #000;
+
+		}
+		table#trDlg, td#tdDlg {
+			background-color: #f0f0f0;
+			font-size: 10px;	
+		}
+		textarea {
+			font-family: inherit;
+			font-size: 10pt;
+			border: 1px solid #444;
+			background-color: white;
+			width: 100%;
+
+		}
+		input[type="button"] {
+			font-family: inherit;
+			border: 1px solid #808080;
+			-moz-border-radius: 10px;
+			-wekbit-border-radius: 10px;
+			margin: 1px;
+			color: white;
+			background-color: #81a0b5;
+			width: 100px;
+		}
+		input[type="button"]:hover{
+			margin: 1px;
+			background-color: #006bb5;
+		}
+		input [type="button"]:active {
+			margin: 1px;
+			font-weight: bold;
+			background-color: #006bb5;
+		}
+		input [type="button"]:focus {
+			margin: 0px;
+			font-weight: bold;
+			background-color: #006bb5;
+		}
+	</style>
+</head>
+<script src="jWebSocket.js" type="text/javascript"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script>
+	var userName,socket,tbxUsername,tbxMsg,divChat;
+	//自动加载
+	function window_onload() {
+		divChat = document.getElementById('divchat');
+		tbxUsername = document.getElementById('tbxUsername');
+		tbxMsg = document.getElementById('tbxMsg');
+		tbxUsername.focus();     //进来自动将焦点聚在输入框
+		tbxUsername.select();
+	}
+	//添加聊天信息
+	function AddMsg(msg) {
+		divChat.innerHTML += msg + '<br>';
+		//获取滚动距离
+		if(divChat.scrollHeight > divChat.clientHeight)
+			divChat.scrollTop = divChat.scrollHeight - divChat.clientHeight;
+	}
+	function btnLogin_onclick() {
+		if(tbxUsername.value.trim() == ''){
+			alert('请输入用户名');
+			return;
+		}
+		userName = tbxUsername.value.trim();
+		socket = io.connect();  //连接服务器socket
+		//监听连接事件
+		socket.on('connect', function() {
+			AddMsg("与聊天服务器建立连接。");
+			//监听登录事件
+			socket.on('login', function(name) {
+				AddMsg('欢迎用户'+name+'进入聊天室。');
+			});
+			//转发客户端信息
+			socket.on('sendClients', function(names){
+				//获取左边对象
+				var divRight = document.getElementById('divRight');
+				var str = "";
+				names.forEach(function(name){
+					//拼接信息字串
+					str += name + "<br/>";
+				});
+				//将用户信息拼接出来
+				divRight.innerHTML = "用户列表<br/>";
+				divRight.innerHTML += str;
+			});
+			//聊天内容显示
+			socket.on('chat', function(data){
+				AddMsg(data.user+'说：'+data.msg);
+			});
+			//监听客户端断开事件******
+			socket.on('disconnect', function() {
+				AddMsg('与聊天服务器的连接已断开。');
+				//断开放服务器之后，关闭发送按钮与登出按钮   此时设置为可登录
+				document.getElementById("btnSend").disabled = true;
+				document.getElementById("btnLogout").disabled = true;
+				document.getElementById("btnLogout").disabled = "";
+				var divRight = document.getElementById("divRight");
+				divRight.innerHTML = "用户列表";
+			});
+			//监听登出事件************************
+			socket.on('logout', function(name) {
+				AddMsg('用户 '+name+' 已推出聊天室。 ');
+			});
+			//监听用户名验证************************				
+			socket.on('duplicate', function() {
+				alert('该用户名已被使用。');
+				document.getElementById("btnSend").disabled = true;
+				document.getElementById("btnLogout").disabled = true;
+				document.getElementById("btnLogin").disabled = "";
+			});
+		});
+		socket.on('error', function(err) {
+			AddMsg('与服务器之间的连接发生错误。')
+			socket.disconnect();   //触发断开连接的事件
+			socket.removeAllListeners('connect');// 移除连接监听事件
+			io.sockets = {};
+		});
+		//向服务器发射信息请求登录*********************
+		socket.emit('login', userName);  
+		document.getElementById("btnSend").disabled = '';
+		document.getElementById("btnLogout").disabled = '';
+		document.getElementById("btnLogin").disabled = true;
+	}
+	//客户端信息发送*******************************
+	function btnSend_onclick() {
+		//获取文本信息
+		var msg = tbxMsg.value;
+		if(msg.length > 0) {
+			//如果信息存在则向服务器发送请求
+			socket.emit('chat', {user:userName, msg: msg});
+			tbxMsg.value = '';   //信息发送后将信息重新置空
+		}
+	}
+	//客户端登出按钮***********************
+	function btnLogout_onclick() {
+		//向服务器发送登出请求
+		socket.emit('logout', userName);
+		socket.disconnect();  //触发断开连接
+		socket.removeAllListeners('connect');
+		io.sockets = {};
+		AddMsg("用户 " + userName + "退出聊天室：");
+		var divRight = document.getElementById("divRight");
+		divRight.innerHTML = "用户列表";
+		document.getElementById("btnSend").disabled = "disabled";
+		document.getElementById("btnLogout").disabled = "disabled";
+		document.getElementById("btnLogin").disabled = '';
+	}
+	//页面关闭事件*************************************
+	function window_onunload() {
+		socket.emit('logout', userName);
+		socket.disconnect();
+	}
+</script>
+<body onload="window_onload()" onunload="window_onunload" style="border:1px solid #000">
+<h1>聊天室</h1>
+<div id="divContainer1">
+	<table id="tbDlg" border="0" cellpadding="3" cellspacing="0" width="100%">
+		<tr id="trDlg">
+			<td id="tdDlg" width="5">
+				用户名：&nbsp;
+				<input type="text" id="tbxUsername" value="游客" size="20">
+				<input type="button" id="btnLogin" value="登录" onclick="btnLogin_onclick();">
+				<input type="button" value="退出" disabled id="btnLogout" onclick="btnLogout_onclick();">
+			</td>
+		</tr>
+	</table>
+</div>
+<div id="divLeft">
+	<div id="divchat"></div>
+	<div id="divContainer3">
+		<table id="tbDlg" border="0" cellpadding="3" cellspacing="0" width="100%">
+			<tr id="trDlg">
+				<td valign="top" id="tdDlg" nowrap>对话</td>
+				<td valign="top" id="tdDlg">
+					<textarea id="tbxMsg" cols="255" rows="5" style="width:100%;"></textarea>
+				</td>
+				<td valign="top" id="tdDlg">
+					<input type="button" id="btnSend" value="发送" disabled onclick="btnSend_onclick();">
+				</td>
+			</tr>
+		</table>
+	</div>
+</div>
+<div id="divRight" style="height: 436px;">
+	用户列表：
+</div>
+</body>
+</html>

@@ -1,0 +1,41 @@
+<html>
+
+<head>
+    html5 canvas html5-canvas html5-animation shareimprove this question edited Apr 13 '12 at 12:52 mercator 17.8k54258 asked Jul 21 '11 at 11:17 Chris 4,04652364 add a comment 1 Answer activeoldestvotes up vote 5 down vote accepted It's actually a non-trivial math question, usually known as a "zoom point" Take a look at here where another canvas user wanted to do the same thing and found a way.
+    <canvas id="canvas" width="800" height="600"></canvas>
+    <script type="text/javascript">
+    var canvas = document.getElementById("canvas");
+    var context = canvas.getContext("2d");
+    var scale = 1;
+    var originx = 0;
+    var originy = 0;
+
+    function draw() {
+        context.fillStyle = "blue";
+        context.fillRect(originx, originy, 800 / scale, 600 / scale);
+        context.fillStyle = "red";
+        context.fillRect(50, 50, 100, 100);
+        context.fillStyle = "red";
+        context.fillRect(500, 50, 100, 100);
+    }
+    setInterval(draw, 100);
+    canvas.onmousewheel = function(event) {
+
+        var mousex = event.clientX - canvas.offsetLeft;
+        var mousey = event.clientY - canvas.offsetTop; //获取鼠标位置
+        var wheel = event.wheelDelta / 120; //n or -n -1 或 1  wheelDelta表示向上或向下滚动。
+        var zoom = 1 + wheel / 2;
+
+        context.translate(originx,originy);
+        context.scale(zoom, zoom); //scale()缩放当前绘图至更大或更小
+        context.translate(-(mousex / scale + originx - mousex / (scale * zoom)), -(mousey / scale + originy - mousey / (scale * zoom)));
+        //translate()重新映射画布上的 (0,0) 位置
+
+        originx = (mousex / scale + originx - mousex / (scale * zoom));
+        originy = (mousey / scale + originy - mousey / (scale * zoom));
+        scale *= zoom;
+    }
+    </script>
+    </body>
+
+</html>

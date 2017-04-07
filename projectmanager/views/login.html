@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登录</title>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <link href="assets/css/animate.min.css" rel="stylesheet">
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="assets/js/jquery-3.1.1.min.js"></script>
+    <script src="assets/js/layer/layer.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="assets/js/bootstrap.min.js"></script>
+    <!--首页样式css文件-->
+    <style>
+        .login-content {
+            position: relative;
+            margin: 40px 0;
+            padding: 36px 10px 20px;
+            background-color: #fff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body style="font-size: 16px;background-color: #f4f7ed;margin:0; height:100%;">
+<div class="container-fluid">
+    <div class="col-md-12 text-center" style="margin-top: 40px">
+        <div class="col-md-12 text-center">
+            <h2 style="font-size: 40px">LYX</h2>
+        </div>
+        <div class="col-md-4 text-center">&nbsp;</div>
+        <div class="col-md-4 login-content" style="background-color: #FFFFFF;height: 280px;">
+            <div class="col-md-12">
+                <div class="col-md-3 text-left" style="height: 34px;line-height: 34px">账号:</div>
+                <div class="col-md-9">
+                    <input class="form-control" style="background-color: #fff"
+                           type="text" placeholder="请输入账号" name="username">
+                </div>
+            </div>
+            <div class="col-md-12" style="margin-top: 50px">
+                <div class="col-md-3 text-left" style="height: 34px;line-height: 34px">密码:</div>
+                <div class="col-md-9">
+                    <input class="form-control" style="background-color: #fff;"
+                           type="password" placeholder="请输入密码" name="password">
+                </div>
+            </div>
+            <div class="col-md-12" style="margin-top: 50px">
+                <div class="col-md-6 text-center">
+                    <input style="width: 100px" type="submit" name="login" class="btn btn-success" value="登录">
+                </div>
+                <div class="col-md-6 text-center" style="line-height: 35px">
+                    <a href="register" style="color: #bbb;">注册</a>
+                </div>
+            </div>
+
+        </div>
+        <div class="col-md-4">&nbsp;</div>
+    </div>
+    <div id="footer" class="container">
+        <nav class="navbar navbar-default navbar-fixed-bottom">
+            <div class="navbar-inner navbar-content-center">
+                <p class="text-muted credit text-center" style="padding: 10px;font-size: 15px">
+                    @数据库课程设计
+                </p>
+            </div>
+        </nav>
+    </div>
+</div>
+</body>
+<script >
+    $("[name=login]").click(function () {
+        var username = $("[name=username]").val();
+        var password = $("[name=password]").val();
+        if (username == '') {
+            layer.msg('账号不能为空', {icon: 2});
+            $("[name=username]").focus();
+            return;
+        } else if (password == '') {
+            layer.msg('密码不能为空', {icon: 2});
+            $("[name=password]").focus();
+            return;
+        }
+        $.ajax({
+            type: "POST",  //提交方式
+            url: "login",//路径
+            data: {
+                "username": username,             //对应的项目id那些，自己看
+                "password": password
+            },//数据，这里使用的是Json格式进行传输
+            success: function (result) {//返回数据根据结果进行相应的处理
+                if (result!="err") {     //*******注：这里需要自己定义！！！！！
+                    layer.msg('登录成功', {icon: 1});
+                    sessionStorage.user_id = result;
+                    localStorage.username = username;
+                    location.href="/index";
+                } else {
+                    layer.msg('登录失败', {icon: 2});
+                }
+            },
+            error: function (err) {
+                layer.msg('登录失败', {icon: 2});
+            }
+        });
+    });
+</script>
+<script src="/assets/js/mobileBar.js"></script>
+</html>

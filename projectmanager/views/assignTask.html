@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>分配任务</title>
+    <!--TODO:通用资源文件-->
+    <% include _partials/resources.html %>
+    <!--日期选择器-->
+    <script type="text/javascript" src="/assets/js/jedate/jedate.min.js"></script>
+    <!--首页样式css文件-->
+    <link rel="stylesheet" href="/assets/css/common.css">
+    <link rel="stylesheet" href="/assets/css/myProject.css">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="col-md-1 text-center"></div>
+    <div class="col-md-10 text-center">
+        <!--TODO: 项目公用header-->
+        <% include _partials/header.html %>
+
+        <!--TODO:内容主体-->
+        <div class="col-md-12 main row animated fadeInDown">
+            <div class="col-md-12" style="margin-top: 25px">
+                <div class="col-md-4 text-left">
+                    <!--<div class="project-name">彬总项目</div>-->
+                    <!--<div class="project-desc">这是彬总的项目描述</div>-->
+                </div>
+                <div class="col-md-8 text-right project-selection">
+                    <!--<a href="">待处理任务</a>-->
+                    <!--<a href="">成员</a>-->
+                    <!--<a href="projectSetting.html">设置</a>-->
+                    <a href="/myProject">返回上一页</a>
+                </div>
+                <div class="col-md-12 project-line1"></div>
+                <div class="col-md-12 project-line2"></div>
+            </div>
+            <div class="col-md-12  project-lists" style="margin-top: 30px;margin-left: 10px">
+                <form action="/assignTask/confirmTask" method="post">
+                    <div class="col-md-12">
+                        <div class="col-md-2 text-left" style="height: 34px;line-height: 34px">完成日期:</div>
+                        <div class="col-md-10">
+                            <input class="datainp form-control" style="background-color: #fff" id="dateinfo"
+                                   type="text" placeholder="请选择" readonly name="date">
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="margin-top: 10px">
+                        <div class="col-md-2 text-left" style="height: 34px;line-height: 34px">任务成员:</div>
+                        <div class="col-md-10">
+                            <select name="user_id" id="user_id" class="form-control">
+                                <% members.map(function(member){ %>
+                                <option value="<%=member.memberID%>"><%=member.memberName%></option>
+                                <% })%>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="margin-top: 10px">
+                        <input type="submit" class="form-control btn btn-success" name="submit" value="保存信息">
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1 text-center"></div>
+</div>
+</body>
+<script type="text/javascript">
+    jeDate({
+        dateCell:"#dateinfo",
+        isinitVal:true,
+        isTime:true, //isClear:false,
+        minDate:"2014-09-19 00:00:00"
+    })
+</script>
+<script src="/assets/js/mobileBar.js"></script>
+</html>

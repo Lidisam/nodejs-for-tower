@@ -1,0 +1,34 @@
+.week-title1{
+    font-size: 14px;
+    color: #555;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+.week-content {
+    margin: 0 0 15px 0;
+    font-size: 14px;
+    color: #555;
+}
+.week-dir {
+    border-radius: 50%;
+    height: 45px;
+    width: 45px;
+    color: #fff;
+    background-color: #ccc;
+    line-height: 60px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 18px
+}
+
+.week-dir:hover {
+    background-color: #4ea5ad;
+    cursor:pointer;
+}
+.weekly-title {
+    margin: 0 0 10px 0;
+    color: #84a099;
+    font-size: 16px;
+    font-weight: bold;
+}

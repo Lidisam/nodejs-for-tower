@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>日历</title>
+    <!-- 新 Bootstrap 核心 CSS 文件 -->
+    <link rel="stylesheet" href="assets/css/bootstrap.min.css">
+    <!--S=日历样式-->
+    <link href="assets/css/plugins/fullcalendar/fullcalendar.print.css" rel="stylesheet">
+    <link href="assets/css/animate.min.css" rel="stylesheet">
+    <link href="assets/css/style.min862f.css?v=4.1.0" rel="stylesheet">
+    <!--E=日历样式-->
+    <!-- jQuery文件。务必在bootstrap.min.js 之前引入 -->
+    <script src="assets/js/jquery-3.1.1.min.js"></script>
+    <!-- 最新的 Bootstrap 核心 JavaScript 文件 -->
+    <script src="assets/js/bootstrap.min.js"></script>
+    <!--[if IE 7]>
+    <link rel="stylesheet" href="assets/css/fontAwesome/css/font-awesome-ie7.min.css"><![endif]-->
+    <link rel="stylesheet" href="assets/css/fontAwesome/css/font-awesome.min.css">
+    <!--首页样式css文件-->
+    <link rel="stylesheet" href="assets/css/common.css">
+    <link rel="stylesheet" href="assets/css/dynamic.css">
+</head>
+<body>
+<div class="container-fluid" style="background-color: #F4F7ED">
+    <div class="col-md-1 text-center"></div>
+    <div class="col-md-10 text-center">
+        <!--TODO: 项目公用header-->
+        <% include _partials/header.html %>
+        <!--筛选动态\所有项目、日历和周报  所有成员-->
+        <div class="col-md-8 main row animated fadeInDown">
+            <div class="ibox float-e-margins">
+                <div class="ibox-content" style="width: 100%;margin-top: 5px">
+                    <div id="calendar"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1 text-center"></div>
+</div>
+<div class="datas" style="display: none">
+    <% calendars.map(function(tasks,index){ %>
+    <span id='task_name_<%=index%>'><%=tasks.taskName%></span>
+    <span id='task_desc_<%=index%>'><%=tasks.taskDesc%></span>
+    <span id='create_date_<%=index%>'><%=tasks.createDate%></span>
+    <span id='deadline_<%=index%>'><%=tasks.deadline%></span>
+    <span id='project_name_<%=index%>'><%=tasks.projectName%></span>
+    <% })%>
+
+</div>
+
+</body>
+<script src="assets/js/clander/jquery-ui.custom.min.js"></script>
+<script src="assets/js/clander/plugins/iCheck/icheck.min.js"></script>
+<script src="assets/js/clander/plugins/fullcalendar/fullcalendar.min.js"></script>
+<script>
+    $(document).ready(function () {
+        //获取html中输出的项目信息
+        var task_names = [];
+        var task_descs = [];
+        var create_dates = [];
+        var deadlines = [];
+        var project_names = [];
+        for (var i = 0; $("#task_name_" + i).text() != ''; i++) {
+            task_names[i] = $("#task_name_" + i).text();
+            task_descs[i] = $("#task_desc_" + i).text();
+            create_dates[i] = $("#create_date_" + i).text();
+            deadlines[i] = $("#deadline_" + i).text();
+            project_names[i] = $("#project_name_" + i).text();
+        }
+        var res = "[";
+        for (i = 0; i < task_names.length; i++) {
+            if (i == 0) {
+                res += '{"title":"任务名：' + task_names[i] + '\\n描述：' + task_descs[i] + '\\n ' +
+                        ' 项目名：' + project_names[i] + '",' +
+                        '"start": "' + create_dates[i] + '"' +
+                        ',"end":"' + deadlines[i] + '"}';
+            } else {
+                res += ',{"title":"任务名：' + task_names[i] + '\\n描述：' + task_descs[i] + '\\n' +
+                        ' 项目名：' + project_names[i] + '",' +
+                        '"start": "' + create_dates[i] + '"' +
+                        ',"end":"' + deadlines[i] + '"}';
+            }
+        }
+        res += "]";
+        res = JSON.parse(res);
+
+        $(".i-checks").iCheck({checkboxClass: "icheckbox_square-green", radioClass: "iradio_square-green",});
+        $("#external-events div.external-event").each(function () {
+            var d = {title: $.trim($(this).text())};
+            $(this).data("eventObject", d);
+            $(this).draggable({zIndex: 999, revert: true, revertDuration: 0})
+        });
+        $("#calendar").fullCalendar({
+            header: {left: "prev,next", center: "title", right: "month,agendaWeek,agendaDay"},
+            editable: true,
+            droppable: true,
+            drop: function (g, h) {
+                var f = $(this).data("eventObject");
+                var d = $.extend({}, f);
+                d.start = g;
+                d.allDay = h;
+                $("#calendar").fullCalendar("renderEvent", d, true);
+                if ($("#drop-remove").is(":checked")) {
+                    $(this).remove()
+                }
+            },
+            events: res
+        })
+    });
+</script>
+<script src="/assets/js/mobileBar.js"></script>
+</html>

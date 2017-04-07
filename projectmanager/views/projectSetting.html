@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>项目设置</title>
+
+    <!--TODO:通用资源文件-->
+    <% include _partials/resources.html %>
+    <!--首页样式css文件-->
+    <link rel="stylesheet" href="assets/css/common.css">
+    <link rel="stylesheet" href="assets/css/myProject.css">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="col-md-1 text-center"></div>
+    <div class="col-md-10 text-center">
+        <!--TODO: 项目公用header-->
+        <% include _partials/header.html %>
+        <div class="col-md-12 main row animated fadeInDown">
+            <div class="col-md-12" style="margin-top: 25px">
+                <div class="col-md-4 text-left">
+                    <div class="project-name"><%=projectname%></div>
+                    <div class="project-desc"><%=projectdesc%></div>
+                </div>
+                <div class="col-md-8 text-right project-selection">
+                    <a href="/waitDealTask">待处理任务</a>  <!--(1)-->
+                    <a href="/projectMembers">成员</a>   <!--(3)-->
+                    <a href="/projectSetting">设置</a>
+                </div>
+                <div class="col-md-12 project-line1"></div>
+                <div class="col-md-12 project-line2"></div>
+            </div>
+            <div class="col-md-12  project-lists" style="margin-top: 30px;margin-left: 10px">
+                <form action="#" method="post">
+                    <div class="col-md-12">
+                        <div class="col-md-2 text-left" style="height: 34px;line-height: 34px">项目名称:</div>
+                        <div class="col-md-10">
+                            <input class="form-control" style="background-color: #fff"
+                                   type="text" placeholder="项目名称" name="project_name" value="<%=projectMsgs[0].projectName%>">
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="margin-top: 10px">
+                        <div class="col-md-2 text-left" style="height: 34px;line-height: 34px">项目内容:</div>
+                        <div class="col-md-10">
+                            <textarea  id="" cols="30" rows="10" class="form-control"
+                            placeholder="简单项目描述，便于其他人理解（选填）" name="project_content"><%=projectMsgs[0].projectDesc%></textarea>
+                        </div>
+                    </div>
+                    <div class="col-md-12" style="margin-top: 10px">
+                        <input type="button" class="form-control btn btn-success" name="submit" value="保存信息">
+                        <span class="form-control btn btn-danger" style="margin-top: 5px" name="delBtn">删除项目</span>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1 text-center"></div>
+</div>
+</body>
+<script>
+    $("[name=delBtn]").click(function () {
+        var project_id = 8;   //这个是你自己传的项目id
+        layer.confirm('确认删除？', {
+            btn: ['确认','残忍拒绝'] //按钮
+        }, function(){
+            $.ajax({
+                type: "POST",  //提交方式
+                url: "http://www.baidu.com",//路径
+                data: {
+                    "project_id": project_id             //对应的项目id那些，自己看
+                },//数据，这里使用的是Json格式进行传输
+                success: function (result) {//返回数据根据结果进行相应的处理
+                    if (result.success) {     //*******注：这里需要自己定义！！！！！
+                        layer.msg('删除项目成功', {icon: 1});
+                    } else {
+                        layer.msg('删除项目失败', {icon: 2});
+                    }
+                },
+                error: function (err) {
+                    layer.msg('删除失败,哈哈！我又活下来了', {icon: 1});
+                }
+            });
+        }, function(){
+            layer.msg('哈哈，居然不删我', {icon: 1});
+        });
+    });
+    /**
+     * 更新保存信息  未完成
+     */
+    $("[name=submit]").click(function () {
+        layer.msg('保存成功', {icon: 1});
+    });
+</script>
+<script src="/assets/js/mobileBar.js"></script>
+</html>

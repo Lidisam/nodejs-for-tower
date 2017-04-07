@@ -1,0 +1,335 @@
+<!doctype html>
+<html>
+
+<head>
+    <title>Literally Canvas</title>
+    <link href="css/literallycanvas.css" rel="stylesheet" />
+    <link href="css/jquery.mCustomScrollbar.css" rel="stylesheet" />
+    <link href="css/bootstrap.css" rel="stylesheet" />
+    <meta charset="UTF-8">
+    <!--  强制横屏  -->
+    <meta name="screen-orientation" content="landscape">
+    <!--  强制全屏  -->
+    <meta name="full-screen" content="yes">
+    <!--  开启UC适应屏幕的排版方式  -->
+    <meta name="viewport" content="uc-fitscreen=yes" />
+    <meta name="viewport" content="width=device-width, user-scalable=no" />
+    <style type="text/css">
+        body {
+            font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            margin: 0;
+            background-color: gray;
+        }
+
+        .lc-options {
+            position: absolute;
+            top: 0;
+        }
+
+        .lc-picker {
+            position: fixed;
+            top: 94px;
+            left: 15px;
+        }
+
+        .fs-container {
+            width: 100%;
+            margin: auto;
+            position: relative;
+        }
+
+        .literally {
+            width: 100%;
+            height: 100%;
+            position: relative;
+        }
+
+        .literally img.background,
+        .literally > canvas {
+            position: absolute;
+        }
+
+        body {
+            background: #20CBFF;
+        }
+
+        .tabs .info {
+            margin: 6px 4px 0px 0;
+            padding: 0 6px;
+            color: #fff;
+            float: left;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .tabs {
+            list-style-type: none;
+        }
+
+        .add {
+            list-style-type: none;
+        }
+
+        .tabs .tab_active {
+            border-bottom: 4px solid #FFF;
+            font-weight: bold;
+            color: #fff;
+        }
+
+        .add .info {
+            margin: -12px 4px 0px 0px;
+            padding: 0 6px;
+            color: #fff;
+            max-height: 20px;
+            float: left;
+            font-size: 40px;
+            font-weight: bold;
+            white-space: nowrap;
+            cursor: pointer;
+        }
+
+        .row {
+            margin-right: 0;
+            margin-left: 0;
+        }
+
+        .container-fluid {
+            margin-right: 0;
+            margin-left: 0;
+            padding-right: 0;
+            padding-left: 0;
+        }
+    </style>
+</head>
+
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <nav class="navbar navbar-default" style="background:rgb(32, 203, 255) none repeat scroll 0% 0%;border:none;margin-bottom:0;min-height: 35px;">
+            <div class="container-fluid">
+                <ul class="nav navbar-nav navbar-right" style="margin: 0;float: right !important;">
+                    <li class="dropdown" sytle="float: left;">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="padding-top: 5px; padding-bottom: 0px;">
+                            <img src="image/xiongda.jpg" style="border-radius: 50%;width: 25px;height: 25px;" alt="userHeader"> 用户名
+                            <span class="glyphicon glyphicon-option-vertical"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a href="#">
+                                    <img src="image/meet_a.png" style="width: 20px; height: 19px;" alt="letgo" /> 邀请参加</a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <img src="image/meet_b.png" style="width: 20px; height: 19px;" alt="save" /> 会议保存
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <img src="image/meet_c.png" style="width: 20px; height: 19px;" alt="saveImage" /> 另存为图片
+                                </a>
+                            </li>
+                            <li class="divider"></li>
+                            <li>
+                                <a href="#">
+                                    <img src="image/meet_d.png" style="width: 20px; height: 19px;" alt="meetRoom" /> 我的会议室
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+    <div class="row">
+        <div class="col-sm-12" style="padding-left: 0px; padding-right: 0px;">
+            <nav class="navbar navbar-default" style="background:rgb(32, 203, 255) none repeat scroll 0% 0%;border:none;margin-bottom:0;min-height: 30px;">
+                <ul>
+                    <li class="tabs " labId="0">
+                        <span class='tabs info tab_active'>选项卡1</span>
+                    </li>
+                    <li class="tabs" labId="1"><span class='tabs info'>选项卡2</span></li>
+                    <li class="tabs" labId="2"><span class='tabs info'>选项卡3</span></li>
+                    <li class="add"><span class='info'>+</span></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right" style="margin: 0;float: right !important;">
+                    <li class="dropdown" sytle="float: left;">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false" style="padding-top: 0px; padding-bottom: 0px;">
+                            参与人员
+                            <span class="glyphicon glyphicon-option-vertical"></span>
+                        </a>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a href="#" id="cantsay">
+                                    <img src="image/xiongda.jpg" style="border-radius: 50%;width: 20px; height: 19px;" alt="meetRoom" />用户1&nbsp;<input disabled=disabled type="checkbox"  />
+                                </a>
+                            </li>
+                        </ul>
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12" style="padding-left: 0px; padding-right: 0px;">
+            <div class="fs-container ">
+                <div class="literally one " id="content">
+                    <canvas id="original-canvas" class="col-md-12"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<script src="js/jquery-1.11.2.min.js"></script>
+<script src="js/fastclick.js"></script>
+<script src="js/react-0.10.0.js"></script>
+<script src="js/literallycanvas.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/jquery.mCustomScrollbar.concat.min.js"></script>
+<script src="js/socket.io.js"></script>
+<script type="text/javascript">
+    function initTabs() {
+        window.demo = {}; //初始化工作域
+        window.demo.tabsinfo = [];
+        window.demo.callback = tabChangeEvent;
+        window.demo.inId = 0;
+        window.demo.isCreate=false;
+    }
+
+    function getQS(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)", "i");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]);
+        return null;
+    }
+
+    function tabChangeEvent(nowId) {
+        /**
+         tab选中变更事件处理流程：
+         1.保存当前画布内容tab到数组；
+         2.从数组读取要切换的画布内容；
+         3.清空当前画布。
+         4.将读入的画布信息绘制到画布
+         5.设置当前的tabId为InId
+         **/
+        console.log("从：" + demo.inId + " 切换到 " + nowId);
+        demo.tabsinfo[demo.inId] = lc.getSnapshotJSON(); //1
+        var inSnap = demo.tabsinfo[nowId]; //2
+        lc.clear(); //3
+        if (inSnap) {
+            lc.loadSnapshotJSON(inSnap); //4
+        }
+        demo.inId = nowId; //5
+    }
+
+    $(document).ready(function() {
+        initTabs(); //初始化相关
+        var clikcFun = function() {
+            //写在这里是为了方便统一事件的发生过程，避免写代码。。。
+            $(".tabs").removeClass("tab_active");
+            $(this).addClass("tab_active");
+            //console.log("当前点击的是："+$(this).parent().attr("labId"));
+            var nowId = $(this).parent().attr("labId");
+            window.demo.callback(nowId);
+            return false; //阻止事件再次传播
+        }
+
+        $("li.add").click(function() {
+            if ($("li.tabs").length < 10) {
+                var i = $("li.tabs").length + 1;
+                var lis = "<li class='tabs' labId='" + i + "'><span class='tabs info'>选项卡" + i + "</span></li>";
+                $now = $(lis).insertBefore($("li.add"));
+                $now.children().click(clikcFun);
+                $now.children().trigger("click"); //让其显示为当前选项卡
+            } else {
+                alert("最多只能打开10个绘画区域!");
+            }
+
+            return false;
+        });
+        $('.tabs').click(clikcFun);
+
+
+
+        // 禁止滚动，防止在移动设备上发生滚动
+        $(document).bind('touchmove', function(e) {
+            if (e.target === document.documentElement) {
+                return e.preventDefault();
+            }
+        });
+        LC.setDefaultImageURLPrefix('image');
+        var backgroundImage = new Image();
+        backgroundImage.src = 'image/Chart Bar.png';
+        //水印
+        var watermarkImage = new Image();
+        //watermarkImage.src = '/demo/watermark.png';
+        // for testing watermark loading bug:
+        //  watermarkImage.src = 'http://literallycanvas.com/_static/watermark.png'
+
+        // the only LC-specific thing we have to do
+        var containerOne = document.getElementById('content');
+        var lc = window.lc = LC.init(containerOne, {
+            backgroundShapes: [
+                LC.createShape(
+                        'Image', {
+                            image: backgroundImage,
+                            x: 100,
+                            y: 100
+                        })
+            ],
+            watermarkImage: null,
+            imageSize: {
+                width: 1360,
+                height: 1080
+            }
+
+        });
+        window.demoLC = lc;
+        lc.on("zoom",function(oldScale, newScale){
+            var event={type:1,data:newScale-oldScale};
+            socket.emit("event",event);
+        });
+        lc.on("undo",function(){
+            var event={type:3,data:null};
+            socket.emit("event",event);
+        });
+        lc.on("redo",function(){
+            var event={type:2,data:null};
+            socket.emit("event",event);
+        });
+        lc.on("clear",function(){
+            var event={type:4,data:null};
+            socket.emit("event",event);
+        });
+        lc.on("shapeSave",function(shape){
+            socket.emit("dwing",LC.shapeToJSON(shape.shape));
+        });
+
+
+        // lc.setPan(100, 100);
+
+        $("#open-image").click(function() {
+            window.open(lc.getImage({
+                // rect: {x: 0, y: 0, width: 100, height: 100}
+                scale: 1
+            }).toDataURL());
+        });
+
+        $("#change-size").click(function() {
+            lc.setImageSize(null, 200)
+        });
+
+        //初始化滚动条
+        $(".lc-picker").mCustomScrollbar({
+            axis: "y",
+            autoHideScrollbar: true,
+            theme: "minimal"
+        });
+
+    });
+</script>
+
+<script src="js/sojs.js"></script>
+</body>
+
+</html>

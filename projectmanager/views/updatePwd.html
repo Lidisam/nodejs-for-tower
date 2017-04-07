@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>项目设置</title>
+
+    <!--TODO:通用资源文件-->
+    <% include _partials/resources.html %>
+    <!--首页样式css文件-->
+    <link rel="stylesheet" href="assets/css/common.css">
+    <link rel="stylesheet" href="assets/css/myProject.css">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="col-md-1 text-center"></div>
+    <div class="col-md-10 text-center">
+        <!--TODO: 项目公用header-->
+        <% include _partials/header.html %>
+        <div class="col-md-12 main row animated fadeInDown">
+            <div class="col-md-12" style="margin-top: 25px">
+                <div class="col-md-4 text-left">&nbsp;</div>
+                <div class="col-md-8 text-right project-selection">
+                    <a>用户：<%=userName%></a>
+                </div>
+                <div class="col-md-12 project-line1"></div>
+                <div class="col-md-12 project-line2"></div>
+            </div>
+            <div class="col-md-12  project-lists" style="margin-top: 30px;margin-left: 10px">
+                <div class="col-md-12">
+                    <div class="col-md-2 text-left" style="height: 34px;line-height: 34px">账号:</div>
+                    <div class="col-md-10">
+                        <input class="form-control" style="background-color: #fff"
+                               type="text" placeholder="账号" readonly name="username" value="<%=userName%>">
+                    </div>
+                </div>
+                <div class="col-md-12" style="margin-top: 10px">
+                    <div class="col-md-2 text-left" style="height: 34px;line-height: 34px">原密码:</div>
+                    <div class="col-md-10">
+                        <input class="form-control" style="background-color: #fff"
+                               type="password" placeholder="原密码" name="prepassword">
+                    </div>
+                </div>
+                <div class="col-md-12" style="margin-top: 10px">
+                    <div class="col-md-2 text-left" style="height: 34px;line-height: 34px">新密码:</div>
+                    <div class="col-md-10">
+                        <input class="form-control" style="background-color: #fff"
+                               type="password" placeholder="密码" name="password">
+                    </div>
+                </div>
+                <div class="col-md-12" style="margin-top: 10px">
+                    <div class="col-md-2 text-left" style="height: 34px;line-height: 34px">确认新密码:</div>
+                    <div class="col-md-10">
+                        <input class="form-control" style="background-color: #fff"
+                               type="password" placeholder="确认密码" name="repassword">
+                    </div>
+                </div>
+                <div class="col-md-12" style="margin-top: 10px">
+                    <input type="submit" class="form-control btn btn-success" name="submit" value="确认修改">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1 text-center"></div>
+</div>
+</body>
+<script>
+    $("[name=submit]").click(function(){
+        var username = $("[name=username]").val();
+        var prepassword = $("[name=prepassword]").val();
+        var password = $("[name=password]").val();
+        var repassword = $("[name=repassword]").val();
+        if(username == ''){
+            layer.msg('账号不能为空', {icon: 2});
+            $("[name=username]").focus();
+            return;
+        }else if(password == ''){
+            layer.msg('原密码不能为空', {icon: 2});
+            $("[name=prepassword]").focus();
+            return;
+        }else if(password == ''){
+            layer.msg('新密码不能为空', {icon: 2});
+            $("[name=password]").focus();
+            return;
+        }else if(repassword == ''){
+            layer.msg('新确认密码不能为空', {icon: 2});
+            $("[name=password]").focus();
+            return;
+        }else if(password != repassword) {
+            layer.msg('两次密码输入不一致', {icon: 2});
+            $("[name=repassword]").focus();
+            return;
+        }
+        $.ajax({
+            type: "POST",  //提交方式
+            url: "updatePwd",//路径
+            data: {
+                "user_id":sessionStorage.user_id ,
+                "username": username,             //对应的项目id那些，自己看
+                "prepassword" :prepassword,    //原密码
+                "password": password,      //新密码
+                "repassword": repassword   //确认新密码
+            },//数据，这里使用的是Json格式进行传输
+            success: function (result) {//返回数据根据结果进行相应的处理
+                if (result.success) {     //*******注：这里需要自己定义！！！！！
+                    layer.msg('修改成功', {icon: 1});
+                    location.href="/login";
+                } else {
+                    layer.msg('修改失败', {icon: 2});
+                }
+            },
+            error: function (err) {
+                layer.msg('修改失败', {icon: 2});
+            }
+        });
+    });
+</script>
+<script src="/assets/js/mobileBar.js"></script>
+</html>

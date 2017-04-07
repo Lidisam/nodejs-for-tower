@@ -1,0 +1,86 @@
+body {
+    background-color: #f4f7ed
+}
+
+.main {
+    width: 100%;
+    min-height: 600px;
+    border: 1px solid #dbdfd6;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+    background: #fff;
+    opacity: 1;
+    position: relative;
+    transform: none;
+    -webkit-transform: none;
+    transform-origin: 50% 0 0;
+    -webkit-transform-origin: 50% 0 0
+}
+
+.main .main-project .name {
+    display: block;
+    font-size: 17px;
+    color: #333;
+    line-height: 20px;
+    text-align: center;
+    margin: 0 5px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis
+}
+
+.nav ul li {
+    float: left;
+    margin: 0 15px;
+    padding: 0;
+    border: 0;
+    font-size: 100%;
+    vertical-align: baseline;
+    text-decoration: none;
+    cursor: auto
+}
+
+.nav ul li a {
+    float: left;
+    display: block;
+    font-size: 16px;
+    color: rgba(85, 85, 85, 0.5);
+    line-height: 30px
+}
+
+ol, ul {
+    list-style: none none;
+    margin: 0;
+    padding: 0
+}
+
+.nav {
+    float: left;
+    margin: 20px auto;
+    height: 30px
+}
+
+.members_one {
+    display: block;
+    background: #e1eccb;
+    position: relative;
+    float: left;
+    width: 100px;
+    height: 40px;
+    margin: 0 10px 10px 0;
+    padding: 6px 8px 8px;
+    color: #887;
+    font-size: 15px;
+    cursor: pointer;
+    overflow: hidden;
+    line-height: 30px;
+    border-radius: 4px;
+    -webkit-transition: opacity 400ms ease-in-out;
+    -moz-transition: opacity 400ms ease-in-out;
+    transition: opacity 400ms ease-in-out;
+}
+
+.members_one:hover {
+    opacity: 0.2;
+    filter: alpha(opacity=30);
+    background-color: #000;
+}

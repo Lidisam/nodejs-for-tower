@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>项目首页</title>
+    <!--TODO:通用资源文件-->
+    <% include _partials/resources.html %>
+    <!--首页样式css文件-->
+    <link rel="stylesheet" href="/assets/css/common.css">
+    <link rel="stylesheet" href="/assets/css/index.css">
+</head>
+<body>
+<div class="container-fluid">
+    <div class="col-md-1 text-center"></div>
+    <div class="col-md-10 text-center">
+        <!--TODO: 项目公用header-->
+        <% include _partials/header.html %>
+        <div class="col-md-12 main row animated fadeInDown">
+            <div class="text-right" style="margin-top: 8px;">
+                <a href="installProject" style="color:#4EA5AD;cursor: hand;">新建项目</a>
+            </div>
+            <% projects.map(function(project,index){ %>
+            <div class="col-md-3 text-center main-project" style="margin-top: 50px">
+                <a href="javascript:void(0);" class="project_class">
+                    <div><i id="icon_<%=index%>" class="icon-github-alt" style="font-size: 80px;color: #79ACD5;"></i></div>
+                    <div id='<%=project.projectID%>' style="font-size: 17px;color: #333;" class="name"><%=project.projectName%></div>
+                </a>
+            </div>
+            <% })%>
+        </div>
+    </div>
+    <div class="col-md-1 text-center"></div>
+</div>
+</body>
+<script>
+    $(function(){
+        var $project = $(".project_class");
+        $project.click(function(){
+            var projectId = $(this).find(".name").attr("id");
+            console.log( $(this).find(".name").attr("id"));
+            console.log(projectId);
+            $.ajax({
+                type: "POST",  //提交方式
+                url: "myProject",//路径
+                data: {
+                    "project_id": projectId            //对应的项目id那些，自己看
+                },//数据，这里使用的是Json格式进行传输
+                success: function (result) {//返回数据根据结果进行相应的处理
+                    if (result!="err") {     //*******注：这里需要自己定义！！！！！
+                        location.href="/myProject";
+                    } else {
+                        layer.msg('查找失败', {icon: 2});
+                    }
+                },
+                error: function (err) {
+                    layer.msg('查找失败', {icon: 2});
+                }
+            });
+        });
+    })
+</script>
+<script src="/assets/js/mobileBar.js"></script>
+</html>
+
